@@ -6,10 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reposrt#1-201700716</title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="my-style.css" />
 </head>
 
 <body>
-  <table style="width: 100%">
+  <table style="width: 100%" class="table table-striped header-fixed table-condensed">
     <thead id="thead"></thead>
     <tbody id="tbody"></tbody>
   </table>
@@ -31,10 +32,10 @@
     const rows = groupByDate(sel);
     console.log(rows);
 
-    let th = '<tr>' + '<th style="width: 10%">' + 'Line No.' + '</th>' + '<th style="width: 10%">' + 'Date' + '</th>';
+    let th = '<tr>' + '<th style="width: 10%; text-align:left;">' + 'Line No.' + '</th>' + '<th style="width: 10%; text-align:left;">' + 'Date' + '</th>';
     console.log(selNames.length);
     for (let i = 0; i < selNames.length; i++) {
-      th = th + '<th style="width: 10%">' + selNames[i] + '</th>';
+      th = th + '<th style="width: 15%;">' + selNames[i] + '</th>';
       console.log(selNames[i], th);
     }
     th += '</tr>';
@@ -45,10 +46,10 @@
       const da = rows[i]['date'];
       const cols = rows[i]['cols'];
 
-      let tabrow = '<tr>' + '<td style="width: 10%">' + (i + 1) + '</td>' + '<td style="width: 10%">' + da + '</td>';
+      let tabrow = '<tr>' + '<td style="width:10%; text-align:left;">' + (i + 1) + '</td>' + '<td style="width: 10%; text-align:left;">' + da + '</td>';
       for (let j = 0; j < cols.length; j++) {// col count
         tabrow =
-          tabrow + '<td style="width:10%; text-align:center;">' + cols[j]['price'] + '</td>';
+          tabrow + '<td style="width:15%; text-align:center;">' + cols[j]['price'] + '</td>';
       }
       tabrow += '</tr>';
       $('#tbody').append(tabrow);// using jQuery
