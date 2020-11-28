@@ -7,9 +7,14 @@ home을 수정(listprice를 참고)
 1.<textarea></textarea> 추가(Read Only)
 
 이수구분:
+
 학년:
+
 학번:
+
 이름:
+
+
 
 
 2. home에 Session 기능 추가
