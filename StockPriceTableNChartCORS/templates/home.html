@@ -57,15 +57,20 @@
         <input type="button" class="btn btn-info" value="Delete Table" onclick="deleteTable()" />
       </div>
     </div>
-    <div class="row">
-      <div id="priceTable"></div>
-      <table style="width: 100%" class="table header-fixed table-condensed table-striped">
-        <thead id="thead"></thead>
-        <tbody id="tbody"></tbody>
-      </table>
+    <div style="display:inline-block; width: 48%; vertical-align: top; min-width:550px;">
+      <div class="row">
+        <div id="priceTable">
+        <table style="width: 100%" class="table header-fixed table-condensed table-striped">
+          <thead id="thead"></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+        </div>
+      </div>
     </div>
-    <div class="row">
-      <div id="svgFig1"></div>
+    <div style="display:inline-block; width: 48%; vertical-align: top; margin-left: 3%;">
+      <div class="row">
+        <div id="svgFig1"></div>
+      </div>
     </div>
   </div>
   <!-- Bootstrap core JavaScript
@@ -77,6 +82,7 @@
     var selList = [];
     var selQuery = '';
     var gdays = 30;
+    var tempList = [];
 
     function selectStock(btnObj) {
       var val = btnObj.value;
@@ -113,7 +119,24 @@
       }
     }
     function showTable() {
-      if (selList.length === 0) return;
+      console.log("===show===")
+      console.log(tempList)
+      if (tempList.length != 0){
+        var tempLast = tempList[tempList.length-1];
+        selList.push(tempLast)
+        console.log(selList)
+        tempList.splice(tempList.indexOf(tempLast));
+      }
+      console.log("==showTable==")
+      console.log(selList)
+      console.log("=============")
+
+      if (selList.length === 0)
+        $("#priceTable").css('display', 'none');
+      else
+      $("#priceTable").css('display', 'block');
+      
+      
       //var url = 'http://220.67.121.119/stockapi/getprice/' + gdays; // CORS 문제
       //var url = 'http://127.0.0.1:5001/getprice/' + gdays; // CORS 아님
       var url = 'http://127.0.0.1:5005/getprice/' + gdays; // CORS 사용
@@ -157,8 +180,62 @@
       console.log($('#days').val());
       gdays = $('#days').val();
     }
-    function deleteChart() { }
-    function deleteTable() { }
+    function deleteChart() {
+      $('#svgFig1 div:last').remove();
+    }
+    function deleteTable() {
+      if (selList.length === 0) return;
+      //$('#thead>tr>td:last').remove();
+      //$('#tbody tr td:last-child').remove();
+      console.log(selList)
+      var lastAdd = selList[selList.length - 1];
+      tempList.push(lastAdd);
+      console.log(tempList)
+      selList.splice(selList.indexOf(lastAdd));
+      console.log(selList)
+      
+      if (selList.length === 0)
+        $("#priceTable").css('display', 'none');
+      else
+      $("#priceTable").css('display', 'block');
+
+      var url = 'http://127.0.0.1:5005/getprice/' + gdays;
+
+      $.getJSON(url, function (json) {
+        console.log(json);
+        let head = json.head;
+        let rows = json.rows;
+        //$('#priceTable').html('<div>' + JSON.stringify(json) + '</div>');
+        let tabHeadRow = '<td style="text-align:right;">date</td>';
+        let selCols = [];
+        for (let j = 0; j < head.length; j++) {
+          //console.log('head[j]=', head[j]);
+          if (selList.includes(head[j])) {
+            selCols.push(j);
+            tabHeadRow += '<td style="text-align:right;">' + head[j] + '</td>';
+          }
+        }
+        console.log('tabHeadRow=', tabHeadRow);
+        $('#thead').html('<tr>' + tabHeadRow + '</tr>'); // using jQuery
+
+        // build Table Row
+        let tabRows = '';
+        for (let i = 0; i < rows.length; i++) {
+          // row count
+          const da = rows[i][0];
+
+          let tabrow = '<tr>' + '<td style="text-align:right;">' + da + '</td>';
+          for (let j = 0; j < selCols.length; j++) {
+            // col count
+            tabrow += '<td style="text-align:right;">' + rows[i][selCols[j]] + '</td>';
+          }
+          tabrow += '</tr>';
+          tabRows += tabrow;
+        }
+        $('#tbody').html(tabRows); // using jQuery
+      });
+
+    }
   </script>
   <div class="container">
     <hr>
