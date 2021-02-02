@@ -2,6 +2,10 @@
 Created on 2018. 11. 18.
 
 @author: cskim
+
+Updated on 2020. 12. 02
+
+@author: subin kim
 '''
 import os
 import uuid
