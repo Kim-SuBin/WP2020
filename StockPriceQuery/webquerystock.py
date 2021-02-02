@@ -2,6 +2,10 @@
 Created on 2018. 8. 21.
 
 @author: cskim
+
+Updated on 2020. 11. 22.
+
+@author : subin kim
 '''
 from flask import Flask
 from flask import render_template
