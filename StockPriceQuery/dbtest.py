@@ -3,6 +3,10 @@
 Created on 2018. 4. 27.
 
 @author: cskim
+
+Updated on 2020. 11.22
+
+@author: subin kim
 '''
 from dbhelper import DBHelper
 
